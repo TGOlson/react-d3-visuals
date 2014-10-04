@@ -117,12 +117,12 @@ Circle.appendNewCircle = function(e){
 Circle.get = function(property) {
   var prop = this[property],
     scalar = prop.scalar || 1,
-    value = prop.value * scalar;
+    value = prop.value * scalar,
+    posOrNeg;
 
   if(prop.randomized) {
-    var posOrNeg = Math.round(Math.random()) * 2 - 1;
-    random = value / 2 * posOrNeg;
-    value += random;
+    posOrNeg = Math.round(Math.random()) * 2 - 1;
+    value += value / 2 * posOrNeg;
   }
 
   return value;
