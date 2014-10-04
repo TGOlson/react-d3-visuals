@@ -1,0 +1,16 @@
+svg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -10;
+}
+
+rect {
+  fill: none;
+  pointer-events: all;
+}
+
+circle {
+  fill: none;
+  stroke-width: 2.5px;
+}
