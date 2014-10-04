@@ -2,8 +2,6 @@
 
 function Circle() {}
 
-Circle.generating = false;
-
 Circle.generation = {
   value: -200,
   min: -500,
@@ -14,15 +12,15 @@ Circle.generation = {
 
 Circle.startRadius = {
   value: 25,
-  min: 15,
-  max: 300,
+  min: 20,
+  max: 500,
   randomized: false
 };
 
 Circle.endRadius = {
   value: 150,
-  min: 15,
-  max: 300,
+  min: 20,
+  max: 500,
   randomized: false
 };
 
@@ -38,6 +36,14 @@ Circle.fillOpacity = {
   min: 0,
   max: 100,
   scalar: 0.04,
+  randomized: false
+};
+
+Circle.location = {
+  value: 100,
+  min: 0,
+  max: 100,
+  scalar: 0.01,
   randomized: false
 };
 
@@ -64,11 +70,9 @@ Circle.setTimeEvents = function(){
   (function randomInterval() {
 
     setTimeout(function() {
-      if(_this.generating) {
-        _this.appendNewCircle();
-      }
+      _this.appendNewCircle();
 
-      // recursively call self to generate new random interval
+      // recursively call self to see if interval has changed
       randomInterval();
     }, _this.get('generation'));
 
@@ -80,26 +84,16 @@ Circle.setClickEvents = function(){
 };
 
 Circle.appendNewCircle = function(e){
-
   var startRadius = this.get('startRadius'),
     color = this.getColor(),
     fillOpacity = this.get('fillOpacity'),
     duration = this.get('duration'),
     endRadius = this.get('endRadius'),
-    xLoc,
-    yLoc;
-
-  if (e){
-    xLoc = e.clientX;
-    yLoc = e.clientY;
-  } else {
-    xLoc = Math.random() * window.innerWidth - 5;
-    yLoc = Math.random() * window.innerHeight - 5;
-  }
+    location = this.getLocation();
 
   this.svg.insert('circle', 'rect')
-  .attr('cx', xLoc)
-  .attr('cy', yLoc)
+  .attr('cx', location.x)
+  .attr('cy', location.y)
   .attr('r', startRadius)
   .style('stroke', color)
   .style('stroke-opacity', 1)
@@ -121,8 +115,7 @@ Circle.get = function(property) {
     posOrNeg;
 
   if(prop.randomized) {
-    posOrNeg = Math.round(Math.random()) * 2 - 1;
-    value += value / 2 * posOrNeg;
+    value += value / 2 * randomPolarity();
   }
 
   return value;
@@ -130,6 +123,41 @@ Circle.get = function(property) {
 
 Circle.getColor = function() {
   return this.color(randomInt(20));
+};
+
+Circle.getLocation = function(e) {
+  var xLocation,
+    yLocation,
+    randomness;
+
+  // can accept click events
+  if (e){
+    xLocation = e.clientX;
+    yLocation = e.clientY;
+  } else {
+
+    // default position to center of the window
+    xLocation = window.innerWidth / 2;
+    yLocation = window.innerHeight / 2;
+
+    randomness = this.get('location');
+
+    // add randomness as necessary
+    if(randomness) {
+      xLocation += xLocation * makeRandomPosition(randomness);
+      yLocation += yLocation * makeRandomPosition(randomness);
+
+    }
+  }
+
+  function makeRandomPosition(randomness) {
+    return Math.random() * randomPolarity() * randomness;
+  }
+
+  return {
+    x: xLocation,
+    y: yLocation
+  };
 };
 
 Circle.set = function(property, value) {
@@ -140,13 +168,14 @@ Circle.toggleRandom = function(property) {
   this[property].randomized = !this[property].randomized;
 };
 
-Circle.pause = function(){
-  this.generating = false;
-};
-
-randomInt = function(max) {
+function randomInt(max) {
   return Math.floor(Math.random() * (max + 1));
-};
+}
+
+// returns 1 or -1
+function randomPolarity() {
+  return Math.round(Math.random()) * 2 - 1;
+}
 
 window.onload = Circle.start.bind(Circle);
 

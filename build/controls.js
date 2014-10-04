@@ -20,14 +20,18 @@ var controlSettings = [
   {
     name: 'Fill Opacity',
     property: 'fillOpacity'
+  },
+  {
+    name: 'Location Randomness',
+    property: 'location'
   }
 ];
 
 var ControlPad = React.createClass({displayName: 'ControlPad',
   render: function() {
-    var controlNodes = this.props.controlSettings.map(function(settings) {
+    var controlNodes = this.props.controlSettings.map(function(settings, i) {
       return (
-        Control({settings: settings})
+        Control({settings: settings, key: i})
       );
     });
 
@@ -41,9 +45,16 @@ var ControlPad = React.createClass({displayName: 'ControlPad',
 
 var Control = React.createClass({displayName: 'Control',
   render: function() {
-    var settings = this.props.settings
+    var settings = this.props.settings,
       property = settings.property,
-      values = Circle[property];
+      values = Circle[property],
+      randomToggle;
+
+    if(values.randomized === undefined) {
+      randomToggle = null;
+    } else {
+      randomToggle = Randomizer({property: property})
+    }
 
     return (
       React.DOM.div({className: "control"}, 
@@ -53,8 +64,7 @@ var Control = React.createClass({displayName: 'Control',
           min: values.min, 
           max: values.max, 
           defaultValue: values.value}), 
-
-        Randomizer({property: property})
+        randomToggle
       )
     );
   }
