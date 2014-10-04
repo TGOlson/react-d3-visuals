@@ -1,0 +1,42 @@
+body {
+  padding: 0;
+  margin: 0;
+  /*font-family: Arial, Helvetica, sans-serif;*/
+}
+
+.control-pad {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(192, 57, 43, 0.85);
+  width: 200px;
+  color: white;
+}
+
+.control-pad.hide {
+  bottom: auto;
+  width: auto;
+}
+
+.control-pad .controls {
+  margin-top: 35px;
+}
+
+.control p{
+  /*font-size: 18px;*/
+  /*font-weight: 100;*/
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.toggle-controls {
+  float: right;
+  padding: 7px;
+  color: white;
+  cursor: pointer;
+}
+
+.control-pad.hide .controls {
+  display: none;
+}

@@ -1,4 +1,4 @@
-/** @jsx React.DOM */
+  /** @jsx React.DOM */
 
 var controlSettings = [
   {
@@ -28,16 +28,34 @@ var controlSettings = [
 ];
 
 var ControlPad = React.createClass({displayName: 'ControlPad',
-  render: function() {
-    var controlNodes = this.props.controlSettings.map(function(settings, i) {
+  toggleView: function() {
+    var props = this.props;
+
+    props.visible = !props.visible;
+
+    this.setState(props);
+  },
+
+  makeControlNodes: function(settings) {
+    return this.props.controlSettings.map(function(settings, i) {
       return (
         Control({settings: settings, key: i})
       );
     });
+  },
+
+  render: function() {
+
+    var controlNodes = this.makeControlNodes(this.props.controlSettings),
+      klass = this.props.visible ? "show" : "hide",
+      buttonIcon = this.props.visible ? "<<" : ">>";
 
     return (
-      React.DOM.div({className: "controls"}, 
-        controlNodes
+      React.DOM.div({className: "control-pad " + klass}, 
+        React.DOM.span({className: "toggle-controls", onClick: this.toggleView}, buttonIcon), 
+        React.DOM.div({className: "controls"}, 
+          controlNodes
+        )
       )
     );
   }
@@ -63,7 +81,7 @@ var Control = React.createClass({displayName: 'Control',
         Slider({property: property, 
           min: values.min, 
           max: values.max, 
-          defaultValue: values.value}), 
+          value: values.value}), 
         randomToggle
       )
     );
@@ -72,16 +90,26 @@ var Control = React.createClass({displayName: 'Control',
 
 var Slider = React.createClass({displayName: 'Slider',
   onChange: function(e) {
-    Circle.set(this.props.property, e.target.value);
+    var props = this.props,
+      value = e.target.value;
+
+    props.value = value;
+
+    this.setState(props);
+
+    Circle.set(props.property, value);
   },
 
   render: function() {
     return (
-      React.DOM.input({type: "range", 
-        min: this.props.min, 
-        max: this.props.max, 
-        defaultValue: this.props.defaultValue, 
-        onChange: this.onChange})
+      React.DOM.div(null, 
+        React.DOM.input({type: "range", 
+          min: this.props.min, 
+          max: this.props.max, 
+          value: this.props.value, 
+          onChange: this.onChange}), 
+        React.DOM.span(null, " ", this.props.value)
+      )
     );
   }
 });
@@ -93,12 +121,15 @@ var Randomizer = React.createClass({displayName: 'Randomizer',
 
   render: function() {
     return (
-      React.DOM.input({type: "checkbox", onChange: this.onChange})
+      React.DOM.div(null, 
+        React.DOM.input({type: "checkbox", onChange: this.onChange}), 
+        React.DOM.span(null, " randomize")
+      )
     );
   }
 });
 
 React.renderComponent(
-  ControlPad({controlSettings: controlSettings}),
+  ControlPad({controlSettings: controlSettings, visible: true}),
   document.getElementById('content')
 );

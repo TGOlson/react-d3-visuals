@@ -35,7 +35,7 @@ Circle.fillOpacity = {
   value: 0,
   min: 0,
   max: 100,
-  scalar: 0.04,
+  scalar: 0.02,
   randomized: false
 };
 
@@ -43,8 +43,7 @@ Circle.location = {
   value: 100,
   min: 0,
   max: 100,
-  scalar: 0.01,
-  randomized: false
+  scalar: 0.01
 };
 
 Circle.color = d3.scale.category20c();
