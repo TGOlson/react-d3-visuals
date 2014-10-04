@@ -129,7 +129,7 @@ Circle.get = function(property) {
 };
 
 Circle.getColor = function() {
-  return this.color(Math.floor( Math.random()*20 + 1 ));
+  return this.color(randomInt(20));
 };
 
 Circle.set = function(property, value) {
@@ -142,6 +142,10 @@ Circle.toggleRandom = function(property) {
 
 Circle.pause = function(){
   this.generating = false;
+};
+
+randomInt = function(max) {
+  return Math.floor(Math.random() * (max + 1));
 };
 
 window.onload = Circle.start.bind(Circle);
