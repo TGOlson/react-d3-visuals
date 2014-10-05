@@ -61,11 +61,12 @@ var Control = React.createClass({
       randomToggle = <Randomizer property={property}/>
     }
 
-    if(settings.paused === undefined) {
-      pauseToggle = null;
-    } else {
-      pauseToggle = <Pauser property={property} paused={settings.paused}/>
-    }
+    // feature suspended
+    // if(settings.paused === undefined) {
+    //   pauseToggle = null;
+    // } else {
+    //   pauseToggle = <Pauser property={property} paused={settings.paused}/>
+    // }
 
     return (
       <div className="control">
@@ -119,29 +120,30 @@ var Randomizer = React.createClass({
   }
 });
 
-var Pauser = React.createClass({
-  onChange: function(e) {
-    var props = this.props;
+// feature suspended
+// var Pauser = React.createClass({
+//   onChange: function(e) {
+//     var props = this.props;
 
-    props.paused = !props.paused;
-    this.setState(props);
+//     props.paused = !props.paused;
+//     this.setState(props);
 
-    Circle.togglePause(this.props.property);
-  },
+//     Circle.togglePause(this.props.property);
+//   },
 
-  render: function() {
-    var icon = this.props.paused ? "play" : "pause";
+//   render: function() {
+//     var icon = this.props.paused ? "play" : "pause";
 
-    return (
-      <label className="toggle">
-        <input type="checkbox"
-          checked={this.props.paused}
-          onChange={this.onChange}/>
-        <i className={"fa fa-" + icon}></i>
-      </label>
-    );
-  }
-});
+//     return (
+//       <label className="toggle">
+//         <input type="checkbox"
+//           checked={this.props.paused}
+//           onChange={this.onChange}/>
+//         <i className={"fa fa-" + icon}></i>
+//       </label>
+//     );
+//   }
+// });
 
 var ColorPicker = React.createClass({
   handleColorSelection: function(e) {

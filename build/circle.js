@@ -47,6 +47,8 @@ Circle.settings = {
     max: 100,
     scalar: 0.01
   },
+
+  // feature suspended
   // background: {
   //   name: 'Background Interval',
   //   value: 50,
@@ -90,6 +92,7 @@ Circle.setTimeEvents = function(){
 
   })();
 
+  // feature suspended
   // (function randomInterval() {
 
   //   setTimeout(function() {
