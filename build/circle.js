@@ -47,9 +47,21 @@ Circle.settings = {
     max: 100,
     scalar: 0.01
   },
+  // background: {
+  //   name: 'Background Interval',
+  //   value: 50,
+  //   min: 10,
+  //   max: 300,
+  //   scalar: 100,
+  //   paused: true
+  // }
 };
 
-Circle.color = d3.scale.category20c();
+Circle.colorScales = [
+  d3.scale.category20(),
+  d3.scale.category20b(),
+  d3.scale.category20c()
+];
 
 Circle._svg = null;
 
@@ -77,13 +89,31 @@ Circle.setTimeEvents = function(){
     }, _this.getValue('generation'));
 
   })();
+
+  // (function randomInterval() {
+
+  //   setTimeout(function() {
+  //     if(!_this.get('background').paused) {
+  //       _this.setBackground();
+  //     }
+
+  //     // recursively call self to see if interval has changed
+  //     randomInterval();
+  //   }, _this.getValue('background'));
+
+  // })();
 };
+
+Circle.setBackground = function(color) {
+  color = color || Circle.getColor();
+  this.style('svg', {'background-color': color});
+};
+
 
 Circle.setClickEvents = function(){
   var _this = this;
 
   this._svg.on('click', function() {
-    // console.log(d3.event);
     _this.appendNewCircle(d3.event);
   });
 };
@@ -136,13 +166,33 @@ Circle.set = function(property, value) {
   setting.value = value;
 };
 
+Circle.style = function(target, style) {
+  var element;
+
+  if(target === 'svg') {
+    element = this._svg;
+  } else {
+    throw new Error('No implemented for that target');
+  }
+
+  element.style(style);
+};
+
 Circle.toggleRandom = function(property) {
   var setting = this.get(property);
   setting.randomized = !setting.randomized;
 };
 
+Circle.togglePause = function(property) {
+  var setting = this.get(property);
+  setting.paused = !setting.paused;
+};
+
 Circle.getColor = function() {
-  return this.color(randomInt(20));
+  var index = randomInt(2);
+    colorScale = this.colorScales[index];
+
+  return colorScale(randomInt(20));
 };
 
 Circle.getLocation = function(event) {
@@ -169,7 +219,6 @@ Circle.getLocation = function(event) {
 
     }
   }
-
 
   return {
     x: xLocation,

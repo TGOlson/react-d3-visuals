@@ -1,14 +1,16 @@
 body {
   margin: 0;
+  background-color: #333;
 }
 
 .control-pad {
   position: absolute;
   top: 0;
   bottom: 0;
-  background-color: rgba(236, 240, 241, 0.85);
+  background-color: rgba(255, 255, 255, .85);
   width: 240px;
-  color: rgba(192, 57, 43,1.0);
+  color: white;
+  color: #333;
 }
 
 .control-pad.hide {
@@ -17,13 +19,20 @@ body {
 }
 
 .control-pad .controls {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #333;
   margin: 35px 10px 0;
 }
 
-.control {
-  border-top: 1px solid white;
+.control, .color-picker {
+  border-top: 1px solid #333;
   padding: 0 10px 10px;
+}
+
+.color-picker p {
+  display: inline-block;
+  text-transform: uppercase;
+  padding-right: 10px;
+  margin-bottom: 7px;
 }
 
 .control p{
@@ -46,19 +55,19 @@ body {
   display: none;
 }
 
-.randomizer {
+.toggle {
   vertical-align: middle;
   display: inline-block;
   margin-top: -6px;
   padding-left: 9px;
 }
 
-.randomizer input {
+.toggle input {
   width: 15px;
   height: 15px;
 }
 
-.randomizer i {
+.toggle i {
   padding-left: 2px;
 }
 

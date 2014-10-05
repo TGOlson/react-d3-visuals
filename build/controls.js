@@ -26,17 +26,22 @@ var ControlPad = React.createClass({displayName: 'ControlPad',
     return nodes;
   },
 
+  handleColorSelection: function() {
+    console.log('selecting');
+  },
+
   render: function() {
 
     var controlNodes = this.makeControlNodes(this.props.controlSettings),
       klass = this.props.visible ? "show" : "hide",
-      iconDirection = this.props.visible ? "left" : "right";
+      icon = this.props.visible ? "left" : "right";
 
     return (
       React.DOM.div({className: "control-pad " + klass}, 
-        React.DOM.i({className: "control-toggle fa fa-angle-double-" + iconDirection, onClick: this.toggleView}), 
+        React.DOM.i({className: "control-toggle fa fa-angle-double-" + icon, onClick: this.toggleView}), 
         React.DOM.div({className: "controls"}, 
-          controlNodes
+          controlNodes, 
+          ColorPicker(null)
         )
       )
     );
@@ -47,12 +52,19 @@ var Control = React.createClass({displayName: 'Control',
   render: function() {
     var settings = this.props.settings,
       property = this.props.key,
-      randomToggle;
+      randomToggle,
+      pauseToggle;
 
     if(settings.randomized === undefined) {
       randomToggle = null;
     } else {
       randomToggle = Randomizer({property: property})
+    }
+
+    if(settings.paused === undefined) {
+      pauseToggle = null;
+    } else {
+      pauseToggle = Pauser({property: property, paused: settings.paused})
     }
 
     return (
@@ -63,7 +75,8 @@ var Control = React.createClass({displayName: 'Control',
           min: settings.min, 
           max: settings.max, 
           value: settings.value}), 
-        randomToggle
+        randomToggle, 
+        pauseToggle
       )
     );
   }
@@ -98,9 +111,53 @@ var Randomizer = React.createClass({displayName: 'Randomizer',
 
   render: function() {
     return (
-      React.DOM.label({className: "randomizer"}, 
+      React.DOM.label({className: "toggle"}, 
         React.DOM.input({type: "checkbox", onChange: this.onChange}), 
         React.DOM.i({className: "fa fa-random"})
+      )
+    );
+  }
+});
+
+var Pauser = React.createClass({displayName: 'Pauser',
+  onChange: function(e) {
+    var props = this.props;
+
+    props.paused = !props.paused;
+    this.setState(props);
+
+    Circle.togglePause(this.props.property);
+  },
+
+  render: function() {
+    var icon = this.props.paused ? "play" : "pause";
+
+    return (
+      React.DOM.label({className: "toggle"}, 
+        React.DOM.input({type: "checkbox", 
+          checked: this.props.paused, 
+          onChange: this.onChange}), 
+        React.DOM.i({className: "fa fa-" + icon})
+      )
+    );
+  }
+});
+
+var ColorPicker = React.createClass({displayName: 'ColorPicker',
+  handleColorSelection: function(e) {
+    var value = e.target.value;
+
+    // TODO: create svg styling helper
+    Circle.style('svg', {'background-color': e.target.value});
+  },
+
+  render: function() {
+    return (
+      React.DOM.div({className: "color-picker"}, 
+        React.DOM.p(null, "Background"), 
+        React.DOM.input({type: "color", 
+          onChange: this.handleColorSelection, 
+          defaultValue: "#333333"})
       )
     );
   }
