@@ -1,17 +1,14 @@
 body {
-  padding: 0;
   margin: 0;
-  /*font-family: Arial, Helvetica, sans-serif;*/
 }
 
 .control-pad {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
-  background-color: rgba(192, 57, 43, 0.85);
-  width: 200px;
-  color: white;
+  background-color: rgba(236, 240, 241, 0.85);
+  width: 240px;
+  color: rgba(192, 57, 43,1.0);
 }
 
 .control-pad.hide {
@@ -20,23 +17,56 @@ body {
 }
 
 .control-pad .controls {
-  margin-top: 35px;
+  border-bottom: 1px solid white;
+  margin: 35px 10px 0;
+}
+
+.control {
+  border-top: 1px solid white;
+  padding: 0 10px 10px;
 }
 
 .control p{
-  /*font-size: 18px;*/
-  /*font-weight: 100;*/
   text-transform: uppercase;
   margin-bottom: 5px;
 }
 
-.toggle-controls {
+.control-toggle {
+  font-size: 23px;
   float: right;
   padding: 7px;
-  color: white;
   cursor: pointer;
+}
+
+.control-pad.hide {
+  border-radius: 0 0 5px;
 }
 
 .control-pad.hide .controls {
   display: none;
+}
+
+.randomizer {
+  vertical-align: middle;
+  display: inline-block;
+  margin-top: -6px;
+  padding-left: 9px;
+}
+
+.randomizer input {
+  width: 15px;
+  height: 15px;
+}
+
+.randomizer i {
+  padding-left: 2px;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

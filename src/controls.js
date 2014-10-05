@@ -1,58 +1,40 @@
   /** @jsx React.DOM */
 
-var controlSettings = [
-  {
-    name: 'Generation Speed',
-    property: 'generation'
-  },
-  {
-    name: 'Starting Radius',
-    property: 'startRadius'
-  },
-  {
-    name: 'Ending Radius',
-    property: 'endRadius'
-  },
-  {
-    name: 'Circle Duration',
-    property: 'duration'
-  },
-  {
-    name: 'Fill Opacity',
-    property: 'fillOpacity'
-  },
-  {
-    name: 'Location Randomness',
-    property: 'location'
-  }
-];
+var controlSettings = Circle.settings;
 
 var ControlPad = React.createClass({
   toggleView: function() {
     var props = this.props;
-
     props.visible = !props.visible;
-
     this.setState(props);
   },
 
   makeControlNodes: function(settings) {
-    return this.props.controlSettings.map(function(settings, i) {
-      return (
-        <Control settings={settings} key={i}/>
+    var  controlSettings = this.props.controlSettings,
+      nodes = [],
+      node;
+
+    for(var i in controlSettings) {
+      node = (
+        <Control settings={controlSettings[i]} key={i} />
       );
-    });
+
+      nodes.push(node);
+    }
+
+
+    return nodes;
   },
 
   render: function() {
 
     var controlNodes = this.makeControlNodes(this.props.controlSettings),
       klass = this.props.visible ? "show" : "hide",
-      buttonIcon = this.props.visible ? "<<" : ">>";
+      iconDirection = this.props.visible ? "left" : "right";
 
     return (
       <div className={"control-pad " + klass}>
-        <span className="toggle-controls" onClick={this.toggleView}>{buttonIcon}</span>
+        <i className={"control-toggle fa fa-angle-double-" + iconDirection} onClick={this.toggleView}></i>
         <div className="controls">
           {controlNodes}
         </div>
@@ -64,11 +46,10 @@ var ControlPad = React.createClass({
 var Control = React.createClass({
   render: function() {
     var settings = this.props.settings,
-      property = settings.property,
-      values = Circle[property],
+      property = this.props.key,
       randomToggle;
 
-    if(values.randomized === undefined) {
+    if(settings.randomized === undefined) {
       randomToggle = null;
     } else {
       randomToggle = <Randomizer property={property}/>
@@ -76,12 +57,12 @@ var Control = React.createClass({
 
     return (
       <div className="control">
-        <p>{settings.name}</p>
+        <p className="noselect">{settings.name}</p>
 
         <Slider property={property}
-          min={values.min}
-          max={values.max}
-          value={values.value}/>
+          min={settings.min}
+          max={settings.max}
+          value={settings.value}/>
         {randomToggle}
       </div>
     );
@@ -94,7 +75,6 @@ var Slider = React.createClass({
       value = e.target.value;
 
     props.value = value;
-
     this.setState(props);
 
     Circle.set(props.property, value);
@@ -102,14 +82,11 @@ var Slider = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <input type="range"
-          min={this.props.min}
-          max={this.props.max}
-          value={this.props.value}
-          onChange={this.onChange}/>
-        <span> {this.props.value}</span>
-      </div>
+      <input type="range"
+        min={this.props.min}
+        max={this.props.max}
+        value={this.props.value}
+        onChange={this.onChange}/>
     );
   }
 });
@@ -121,10 +98,10 @@ var Randomizer = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <label className="randomizer">
         <input type="checkbox" onChange={this.onChange}/>
-        <span> randomize</span>
-      </div>
+        <i className="fa fa-random"></i>
+      </label>
     );
   }
 });
