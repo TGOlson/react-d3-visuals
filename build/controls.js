@@ -41,7 +41,8 @@ var ControlPad = React.createClass({displayName: 'ControlPad',
         React.DOM.div({className: "controls"}, 
           controlNodes, 
           ColorPicker(null)
-        )
+        ), 
+        React.DOM.a({className: "github", href: "https://github.com/TGOlson/react-d3-visuals"}, "View on GitHub")
       )
     );
   }
