@@ -22,7 +22,6 @@ var ControlPad = React.createClass({
       nodes.push(node);
     }
 
-
     return nodes;
   },
 
@@ -148,7 +147,7 @@ var ColorPicker = React.createClass({
     var value = e.target.value;
 
     // TODO: create svg styling helper
-    Circle.style('svg', {'background-color': e.target.value});
+    Circle.style('svg', {'background-color': value});
   },
 
   render: function() {

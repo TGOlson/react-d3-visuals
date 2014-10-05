@@ -216,7 +216,6 @@ Circle.getLocation = function(event) {
     if(randomness) {
       xLocation += xLocation * randomPosition(randomness);
       yLocation += yLocation * randomPosition(randomness);
-
     }
   }
 
