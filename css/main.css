@@ -7,24 +7,26 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: 0;
   background-color: rgba(255, 255, 255, .85);
   width: 240px;
   color: white;
   color: #333;
+  -webkit-transition:left 0.3s ease;
+     -moz-transition:left 0.3s ease;
+       -o-transition:left 0.3s ease;
+          transition:left 0.3s ease;
 }
 
 .control-pad.hide {
-  bottom: auto;
-  width: auto;
+  left: -240px;
 }
 
 .control-pad .controls {
-  border-bottom: 1px solid #333;
-  margin: 35px 10px 0;
+  margin: 25px 10px;
 }
 
 .control, .color-picker {
-  border-top: 1px solid #333;
   padding: 0 10px 10px;
 }
 
@@ -41,18 +43,14 @@ body {
 }
 
 .control-toggle {
+  position: absolute;
+  background-color: rgba(255, 255, 255, .85);
   font-size: 23px;
-  float: right;
-  padding: 7px;
-  cursor: pointer;
-}
-
-.control-pad.hide {
+  top: 0;
+  right: -29px;
   border-radius: 0 0 5px;
-}
-
-.control-pad.hide .controls {
-  display: none;
+  padding: 7px 9px 7px 7px;
+  cursor: pointer;
 }
 
 .toggle {
